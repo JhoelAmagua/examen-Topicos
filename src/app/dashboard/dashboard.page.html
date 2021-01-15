@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title >CHAT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  class="ion-padding">
+
+    <ion-row>
+      <ion-col text-center style="color:#20742b;">
+        Bienvenido a la página principal
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center style="color:#20742b;">
+        Tu correo registrado es:
+      </ion-col>
+    </ion-row>
+
+      <ion-list lines="full" style=" background-color: #2dd36f;">
+    
+        <form [formGroup]="messageForm" (ngSubmit)="CreateRecord()">
+    
+          <ion-item>
+            <ion-label position="floating" style="color:#20742b;">Correo:</ion-label>
+            <br>
+            <ion-input formControlName="Name" disabled value={{userEmail}}></ion-input>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label position="floating" style="color:#20742b;">Mensaje:</ion-label>
+            <ion-input formControlName="Message"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" style="color:#20742b;">Seleccione una imagen:</ion-label>
+            <br>
+            <ion-input type='file' accept=".png , .jpg" (change)="onUpload($event)"></ion-input>
+          </ion-item>
+          <br>
+          <input #imageUser type="hidden" [value]="urlImage | async">
+          <br>
+          <ion-item>
+            <ion-button (click)="CreateRecord()" [disabled]="messageForm.invalid" >
+              <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+              &nbsp;Enviar Mensaje
+            </ion-button>
+          </ion-item>
+          
+        </form>
+
+    
+        <ion-card *ngFor='let item of messageList ' style="background-color: #338b3f;">
+          <ion-card-header>
+            <ion-card-title style="color: white;">De: {{item.Name}}</ion-card-title>
+            <ion-card-subtitle style="color: white;">Mensaje: {{item.Message}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+    
+      </ion-list>
+    
+
+</ion-content>
+<ion-footer (click)="logout()">
+  <ion-toolbar color="danger">
+    <ion-title>Cerrar sesión</ion-title>
+  </ion-toolbar>
+</ion-footer>
+
