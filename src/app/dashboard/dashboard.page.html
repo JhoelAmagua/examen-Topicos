@@ -35,10 +35,11 @@
           <ion-item>
             <ion-label position="floating" style="color:#20742b;">Seleccione una imagen:</ion-label>
             <br>
-            <ion-input type='file' accept=".png , .jpg" (change)="onUpload($event)"></ion-input>
+            <ion-input type='file' id="my_image" accept=".png , .jpg" (change)="onUpload($event)"  ></ion-input>
           </ion-item>
           <br>
           <input #imageUser type="hidden" [value]="urlImage | async">
+          
           <br>
           <ion-item>
             <ion-button (click)="CreateRecord()" [disabled]="messageForm.invalid" >
@@ -46,6 +47,7 @@
               &nbsp;Enviar Mensaje
             </ion-button>
           </ion-item>
+
           
         </form>
 
@@ -54,8 +56,15 @@
           <ion-card-header>
             <ion-card-title style="color: white;">De: {{item.Name}}</ion-card-title>
             <ion-card-subtitle style="color: white;">Mensaje: {{item.Message}}</ion-card-subtitle>
+            <ion-card-subtitle style="color: white;">Foto:</ion-card-subtitle>
+            <img src="{{item.photoURL}}" alt="profile"> 
+        
           </ion-card-header>
         </ion-card>
+
+        <div class="imgFirebase">
+
+        </div>
     
       </ion-list>
     
