@@ -7,7 +7,7 @@ En esta primera función implementamos el código de Login, en el cual validamos
 ingresa al chat cuente con una cuenta registrada, de este modo se puede enlazar sus mensajes con
 el respectivo usuario.
 
-<ion-item>
+    <ion-item>
       <ion-label position="floating" color="primary">Correo</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
     </ion-item>
@@ -35,4 +35,60 @@ el respectivo usuario.
       </ng-container>
     </div>
     
+    
+### Mensajes: 
+En esta parte se crea un arreglo de los mensajes que serán guardados en Firebase, 
+los cuales constan de un user email, el mensaje y la foto que envíe:
 
+      interface MessageData {
+      Name: string;
+      Message: string;
+      photoURL: string;
+      }
+      
+      ngOnInit() {
+    
+    this.authService.userDetails().subscribe(res => {
+      console.log('res', res);
+      if (res !== null) {
+        this.userEmail = res.email;
+      } else {
+        this.navCtrl.navigateBack('');
+      }
+    }, err => {
+      console.log('err', err);
+    })
+
+    this.messageForm = this.fb.group({
+      Name: this.userEmail,
+      Message: ['', [Validators.required]],
+      photoURL: String(this.urlImage),
+    })
+
+    this.firebaseService.read_messages().subscribe(data => {
+
+      this.messageList = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          Name: e.payload.doc.data()['Name'],
+          Message: e.payload.doc.data()['Message'],
+          photoURL: this.inputImageUser.nativeElement.value,
+        };
+      })
+    });
+
+  }
+
+### Función de imagenes:
+En esta sección creamos la función implementada para lograr capturar las imágenes enviadas, 
+guardarlas con un id randómico y los datos con los que se guardan.
+  onUpload(e) {
+    const id = Math.random().toString(36).substring(2);
+    const file = e.target.files[0];
+    const filePath = `images/${id}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
+    console.log("foto", file);
+  }
