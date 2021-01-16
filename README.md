@@ -1,6 +1,8 @@
 # Examen Topicos 14-01-2021
 ## Link de video en onedrive:
 https://epnecuador-my.sharepoint.com/:v:/g/personal/jorge_amagua01_epn_edu_ec/EdRgKWu_IVZHkW57F05sGEQBkC0WE7vwBBIYLsvcOYvyNw?e=fBYIx3
+## Link de apk en OneDrive:
+https://epnecuador-my.sharepoint.com/:u:/g/personal/jorge_amagua01_epn_edu_ec/ERl_R7c8v0dLsSgDOQTZpKkBAkSIz3D9DKfk4Hk8zDmPcQ?e=bbtuRR
 ## Métodos implementados: 
 ### Login:
 En esta primera función implementamos el código de Login, en el cual validamos que el usuario que 
