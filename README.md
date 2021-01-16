@@ -82,6 +82,7 @@ los cuales constan de un user email, el mensaje y la foto que envíe:
 ### Función de imagenes:
 En esta sección creamos la función implementada para lograr capturar las imágenes enviadas, 
 guardarlas con un id randómico y los datos con los que se guardan.
+
       onUpload(e) {
         const id = Math.random().toString(36).substring(2);
         const file = e.target.files[0];
