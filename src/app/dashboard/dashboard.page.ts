@@ -8,10 +8,12 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {finalize} from 'rxjs/operators';
 import {Observable} from 'rxjs/internal/observable';
+import { UploadTask } from '@angular/fire/storage/interfaces';
 
 interface MessageData {
   Name: string;
   Message: string;
+  photoURL: string;
 }
 
 @Component({
@@ -43,7 +45,7 @@ export class DashboardPage implements OnInit {
   urlImage: Observable<string>;
 
   ngOnInit() {
-
+    
     this.authService.userDetails().subscribe(res => {
       console.log('res', res);
       if (res !== null) {
@@ -58,6 +60,7 @@ export class DashboardPage implements OnInit {
     this.messageForm = this.fb.group({
       Name: this.userEmail,
       Message: ['', [Validators.required]],
+      photoURL: String(this.urlImage),
     })
 
     this.firebaseService.read_messages().subscribe(data => {
@@ -67,11 +70,23 @@ export class DashboardPage implements OnInit {
           id: e.payload.doc.id,
           Name: e.payload.doc.data()['Name'],
           Message: e.payload.doc.data()['Message'],
+          photoURL: this.inputImageUser.nativeElement.value,
         };
       })
-
     });
 
+  }
+
+  
+  onUpload(e) {
+    const id = Math.random().toString(36).substring(2);
+    const file = e.target.files[0];
+    const filePath = `images/${id}`;
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
+    console.log("foto", file);
   }
 
   logout() {
@@ -96,14 +111,5 @@ export class DashboardPage implements OnInit {
       });
   }
 
-  onUpload(e) {
-    // console.log('subir', e.target.files[0]);
-    const id = Math.random().toString(36).substring(2);
-    const file = e.target.files[0];
-    const filePath = `uploads/profile_${id}`;
-    const ref = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, file);
-    this.uploadPercent = task.percentageChanges();
-    task.snapshotChanges().pipe(finalize(() => this.urlImage = ref.getDownloadURL())).subscribe();
-  }
+ 
 }
